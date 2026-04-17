@@ -2,31 +2,31 @@
 
 ## Overview
 
-The AI-Powered Debate Judge is a local, end-to-end system that analyzes spoken arguments and identifies logical fallacies. The system records audio input, converts speech to text, segments the transcript into sentences, and evaluates each sentence using a locally hosted large language model to detect fallacies such as ad hominem, strawman, false dilemma, slippery slope, and hasty generalization.
+The AI-Powered Debate Judge is a local, end-to-end system designed to analyze spoken arguments and identify logical fallacies in near real-time. The system records audio input, converts speech to text, segments the transcript into sentences, and evaluates each sentence using a locally hosted large language model to detect common fallacies such as ad hominem, strawman, false dilemma, slippery slope, and hasty generalization.
 
-This project is implemented as a Jupyter Notebook (`mvp.ipynb`) and runs entirely locally without requiring paid APIs or internet-based inference.
+The entire pipeline runs locally without reliance on paid APIs, ensuring privacy, low cost, and reproducibility.
 
 ---
 
 ## Features
 
-* Command-line audio recording
+* Audio recording via command-line interface
 * Offline speech-to-text transcription
 * Sentence-level argument analysis
 * Detection of common logical fallacies
-* Structured report generation (`report.txt`)
-* Fully local pipeline (privacy-preserving and cost-free)
+* Structured output saved to a report file
+* Fully local execution (no external API dependencies)
 
 ---
 
 ## System Architecture
 
-Audio Recording
+Audio Input
 → Speech-to-Text (Whisper)
 → Sentence Segmentation (NLTK)
 → Fallacy Detection (Local LLM via Ollama)
-→ Filtering and Aggregation
-→ Report Generation (`report.txt`)
+→ Filter & Aggregate Results
+→ Output Report (report.txt)
 
 ---
 
@@ -38,7 +38,7 @@ Audio Recording
 * NLTK (sentence tokenization)
 * sounddevice (audio recording)
 * scipy and numpy (audio processing)
-* requests (communication with local LLM API)
+* requests (API communication with local LLM)
 
 ---
 
@@ -80,7 +80,7 @@ Download and run the model:
 ollama run mistral
 ```
 
-Ensure the Ollama server is running before executing the notebook. The API will be available at:
+Ensure the Ollama server is running before executing the main script. The API will be available at:
 
 ```
 http://localhost:11434
@@ -90,37 +90,21 @@ http://localhost:11434
 
 ## Usage
 
-### 1. Launch Jupyter Notebook
+Run the main script:
 
 ```bash
-jupyter notebook
+python main.py
 ```
 
-Open the file:
+### Workflow
 
-```
-mvp.ipynb
-```
-
----
-
-### 2. Execute Cells in Order
-
-Run all cells sequentially to ensure proper variable initialization.
-
----
-
-### 3. Workflow
-
-1. Run the recording cell
-2. Press ENTER to start recording
-3. Speak your input
-4. Press ENTER again to stop
-5. Audio is saved as a `.wav` file
-6. The notebook transcribes the audio
-7. The transcript is split into sentences
-8. Each sentence is analyzed for logical fallacies
-9. Results are written to `report.txt`
+1. Press ENTER to start recording
+2. Speak your input
+3. Press ENTER again to stop recording
+4. Audio is saved as a `.wav` file
+5. The system transcribes the audio
+6. Each sentence is analyzed for logical fallacies
+7. Results are saved to `report.txt`
 
 ---
 
@@ -132,7 +116,7 @@ The system generates a file named `report.txt` containing:
 * Detected fallacies with corresponding sentences
 * Explanations for each identified fallacy
 
-Example:
+Example structure:
 
 ```
 === FULL TRANSCRIPT ===
@@ -158,18 +142,24 @@ Explanation: ...
 
 ## Limitations
 
-* Fallacy detection is LLM-based and may not always be fully accurate
-* Performance depends on local hardware (CPU/GPU)
+* Fallacy detection is heuristic and LLM-based; results may not always be perfectly accurate
+* Latency may vary depending on hardware (CPU vs GPU)
+* Real-time performance is approximated using chunk-based processing
 * Sentence segmentation depends on transcription quality
-* Notebook execution requires running cells in order
 
 ---
 
 ## Future Improvements
 
 * Real-time streaming analysis
-* Confidence scoring for detected fallacies
+* Confidence scoring for fallacy detection
 * Multi-fallacy detection per sentence
-* Speaker diarization
-* Web-based interface
-* Highlighting trigger phrases within sentences
+* Speaker identification and tracking
+* Web-based user interface
+* Highlighting specific trigger phrases within sentences
+
+---
+
+## License
+
+This project is intended for educational and experimental purposes.
